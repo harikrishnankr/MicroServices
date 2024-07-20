@@ -1,7 +1,5 @@
-import customer from './customer';
-import appEvents from './app-events';
 
-export {
-    customer,
-    appEvents,
+module.exports = {
+    customer: require('./customer'),
+    appEvents: require('./app-events')
 }

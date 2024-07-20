@@ -1,8 +1,5 @@
 // database related modules
-import databaseConnection from './connection';
-import CustomerRepository from './repository/customer-repository';
-
-export {
-    databaseConnection,
-    CustomerRepository,
+module.exports = {
+    databaseConnection: require('./connection'),
+    CustomerRepository: require('./repository/customer-repository'),
 }

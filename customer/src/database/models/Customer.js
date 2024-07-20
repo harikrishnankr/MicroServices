@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
@@ -12,30 +12,30 @@ const CustomerSchema = new Schema({
     ],
     cart: [
         {
-          product: {
-            _id: { type: String, require: true },
-            name: { type: String },
-            banner: { type: String },
-            price: { type: Number }
-          },
+          product: { 
+                _id: { type: String, require: true},
+                name: { type: String},
+                banner: { type: String},
+                price: { type: Number},
+            },
           unit: { type: Number, require: true}
         }
     ],
     wishlist:[
-        { 
-            _id: { type: String, require: true },
-            name: { type: String },
-            banner: { type: String },
-            price: { type: Number },
-            description: { type: String },
-            available: { type: Boolean },
-        }
-    ],
-    orders: [ 
         {
             _id: { type: String, require: true },
-            amount: { type: String },
-            date: { type: Date, default: Date.now() },
+            name: { type: String },
+            description: { type: String },
+            banner: { type: String },
+            avalable: { type: Boolean },
+            price: { type: Number },
+        }
+    ],
+    orders: [
+        {
+            _id: {type: String, required: true},
+            amount: { type: String},
+            date: {type: Date, default: Date.now()}
         }
     ]
 },{
@@ -49,4 +49,4 @@ const CustomerSchema = new Schema({
     timestamps: true
 });
 
-export default mongoose.model('customer', CustomerSchema);
+module.exports =  mongoose.model('customer', CustomerSchema);

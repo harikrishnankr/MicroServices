@@ -1,5 +1,3 @@
-import ProductModel from './Product';
-
-export {
-    ProductModel,
+module.exports = {
+    ProductModel: require('./Product'),
 }

@@ -1,20 +1,19 @@
-import mongoose from 'mongoose';
-import { DB_URL } from '../config';
+const mongoose = require('mongoose');
+const { DB_URL } = require('../config');
 
-export default async() => {
+module.exports = async() => {
 
     try {
         await mongoose.connect(DB_URL, {
-            // useNewUrlParser: true,
-            // useUnifiedTopology: true,
-            // useCreateIndex: true
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+            useCreateIndex: true
         });
         console.log('Db Connected');
         
     } catch (error) {
-        console.log('Error ============')
+        console.error('Error ============ ON DB Connection')
         console.log(error);
-        process.exit(1);
     }
  
 };

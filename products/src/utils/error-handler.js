@@ -1,5 +1,5 @@
-import { createLogger, transports } from 'winston';
-import { AppError } from './app-errors';
+const { createLogger, transports } = require('winston');
+const { AppError } = require('./app-errors');
 
 
 const LogErrors = createLogger({
@@ -69,4 +69,4 @@ const ErrorHandler = async(err,req,res,next) => {
     next();
 }
 
-export default ErrorHandler;
+module.exports = ErrorHandler;

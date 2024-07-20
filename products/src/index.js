@@ -1,7 +1,7 @@
-import express from 'express';
-import { PORT } from './config';
-import { databaseConnection } from './database';
-import expressApp from './express-app';
+const express = require('express');
+const { PORT } = require('./config');
+const { databaseConnection } = require('./database');
+const expressApp = require('./express-app');
 
 const StartServer = async() => {
 
@@ -18,6 +18,7 @@ const StartServer = async() => {
         console.log(err);
         process.exit();
     })
+
 }
 
 StartServer();

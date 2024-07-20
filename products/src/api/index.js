@@ -1,7 +1,5 @@
-import products from './products';
-import appEvents from './app-events';
 
-export {
-    products,
-    appEvents,
+module.exports = {
+    products: require('./products'),
+    appEvents: require('./app-events'),
 }

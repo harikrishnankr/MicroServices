@@ -1,7 +1,4 @@
-import CustomerModel from './Customer';
-import AddressModel from './Address';
-
-export {
-    CustomerModel,
-    AddressModel,
+module.exports = {
+    CustomerModel: require('./Customer'),
+    AddressModel: require('./Address')
 }
