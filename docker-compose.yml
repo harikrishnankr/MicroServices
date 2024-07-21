@@ -7,12 +7,17 @@ services:
     container_name: nosql-db
     volumes:
       - ./db/:/data/db
+    networks:
+      - msnet
 
   rabbitmq:
     image: rabbitmq:alpine
     container_name: rabbitmq
     ports:
-      - '5672:5672'
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - msnet
 
   products:
     build:
@@ -21,6 +26,8 @@ services:
     container_name: products
     ports:
       - "8002:8002"
+    expose:
+      - "8002"
     restart: always
     depends_on:
       - "nosql-db"
@@ -28,9 +35,11 @@ services:
     volumes:
       - .:/app
       - /app/products/node_modules
-
     env_file:
-      - ./products/.env.dev
+      - ./products/.env
+    networks:
+      - msnet
+  
   shopping:
     build:
       dockerfile: Dockerfile
@@ -38,6 +47,8 @@ services:
     container_name: shopping
     ports:
       - "8003:8003"
+    expose:
+      - "8003"
     restart: always
     depends_on:
       - "nosql-db"
@@ -46,7 +57,10 @@ services:
       - .:/app
       - /app/shopping/node_modules
     env_file:
-      - ./shopping/.env.dev
+      - ./shopping/.env
+    networks:
+      - msnet
+  
   customer:
     build:
       dockerfile: Dockerfile
@@ -54,6 +68,8 @@ services:
     container_name: customer
     ports:
       - "8001:8001"
+    expose:
+      - "8001"
     restart: always
     depends_on:
       - "nosql-db"
@@ -62,14 +78,23 @@ services:
       - .:/app/
       - /app/customer/node_modules
     env_file:
-      - ./customer/.env.dev
+      - ./customer/.env
+    networks:
+      - msnet
+  
   nginx-proxy:
     build:
       dockerfile: Dockerfile
       context: ./proxy
     depends_on:
+      - nosql-db
+      - rabbitmq
       - products
       - shopping
       - customer
     ports:
-      - 80:80
+      - "80:80"
+    networks:
+      - msnet
+networks:
+  msnet:

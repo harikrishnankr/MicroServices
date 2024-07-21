@@ -1,6 +1,7 @@
 const CustomerService = require('../services/customer-service');
 const  UserAuth = require('./middlewares/auth');
 const { SubscribeMessage } = require('../utils');
+const { CUSTOMER_SERVICE } = require('../config');
 
 
 module.exports = (app, channel) => {
@@ -8,7 +9,7 @@ module.exports = (app, channel) => {
     const service = new CustomerService();
 
     // To listen
-    SubscribeMessage(channel, service);
+    SubscribeMessage(channel, service, CUSTOMER_SERVICE);
 
 
     app.post('/signup', async (req,res,next) => {

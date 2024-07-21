@@ -7,6 +7,7 @@ const {
   EXCHANGE_NAME,
   CUSTOMER_SERVICE,
   MSG_QUEUE_URL,
+  QUEUE_NAME,
 } = require("../config");
 
 //Utility functions
@@ -61,7 +62,7 @@ module.exports.CreateChannel = async () => {
   try {
     const connection = await amqplib.connect(MSG_QUEUE_URL);
     const channel = await connection.createChannel();
-    await channel.assertQueue(EXCHANGE_NAME, "direct", { durable: true });
+    await channel.assertExchange(EXCHANGE_NAME, "direct", { durable: true });
     return channel;
   } catch (err) {
     throw err;
@@ -73,24 +74,14 @@ module.exports.PublishMessage = (channel, service, msg) => {
   console.log("Sent: ", msg);
 };
 
-module.exports.SubscribeMessage = async (channel, service) => {
-  await channel.assertExchange(EXCHANGE_NAME, "direct", { durable: true });
-  const q = await channel.assertQueue("", { exclusive: true });
-  console.log(` Waiting for messages in queue: ${q.queue}`);
+module.exports.SubscribeMessage = async (channel, service, bindingKey) => {
+  const appQueue = await channel.assertQueue(QUEUE_NAME);
+  channel.bindQueue(appQueue.queue, EXCHANGE_NAME, bindingKey);
 
-  channel.bindQueue(q.queue, EXCHANGE_NAME, CUSTOMER_SERVICE);
-
-  channel.consume(
-    q.queue,
-    (msg) => {
-      if (msg.content) {
-        console.log("the message is:", msg.content.toString());
-        service.SubscribeEvents(msg.content.toString());
-      }
-      console.log("[X] received");
-    },
-    {
-      noAck: true,
-    }
-  );
+  channel.consume(appQueue.queue, data => {
+    console.log('Receive Data');
+    console.log(data.content.toString());
+    service.SubscribeEvents(data.content.toString());
+    channel.ack(data);
+  });
 };

@@ -1,14 +1,14 @@
 const ShoppingService = require("../services/shopping-service");
 const { PublishCustomerEvent, SubscribeMessage } = require("../utils");
 const  UserAuth = require('./middlewares/auth');
-const { CUSTOMER_SERVICE } = require('../config');
+const { CUSTOMER_SERVICE, SHOPPING_SERVICE } = require('../config');
 const { PublishMessage } = require('../utils')
 
 module.exports = (app, channel) => {
     
     const service = new ShoppingService();
 
-    SubscribeMessage(channel, service)
+    SubscribeMessage(channel, service, SHOPPING_SERVICE);
 
     app.post('/order',UserAuth, async (req,res,next) => {
 
